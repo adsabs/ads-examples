@@ -1,0 +1,95 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\pagenumbering{gobble}
+
+\pdfinfo{
+  /Title    ()
+  /Author   ()
+  /Creator  ()
+  /Producer ()
+  /Subject  ()
+  /Keywords ()
+}
+
+\geometry{
+  top=0.8in,
+  bottom=0.8in,
+  left=1.0in,
+  right=1.0in
+}
+
+\thispagestyle{empty}
+
+\begin{document}
+
+\begin{center}
+  \includegraphics[width=0.6\textwidth]{ads_logo}
+\end{center}
+
+{{ orcid_id }}
+
+{\bf Created on}: \today
+
+\section*{Papers}
+
+  \begin{tabular}{p{2.5in} p{0.5in} p{0.5in}}
+     & Total & Refereed \\
+     \hline
+     Number of papers & {{ number_of_papers_total }} & {{ number_of_papers_ref }}\\
+     Normalized paper count & {{ normalized_paper_total }} & {{ normalized_paper_ref }}\\
+  \end{tabular}
+
+\section*{Citations}
+
+  \begin{tabular}{p{2.5in} p{0.5in} p{0.5in}}
+     & Total & Refereed \\
+     \hline
+     Number of citing papers & {{ number_citing_total }}& {{ number_citing_ref }} \\
+     Total citations & {{ total_cites }} & {{ total_cites_ref }} \\
+     Number of self-citations & {{ self_cite_total }} & {{ self_cite_ref }} \\
+     Average citations & {{ avg_cite_total }} &  {{ avg_cite_ref }} \\
+     Median citations & {{ med_cite_total }} & {{ med_cite_ref }} \\
+     Normalized citations & {{ norm_cite_total }} & {{ norm_cite_ref }} \\
+     Refereed citations & {{ ref_cite_total }} & {{ ref_cite_ref }} \\
+     Average refereed citations & {{ avg_ref_cite_total }} & {{ avg_ref_cite_ref }} \\
+     Median refereed citations & {{ med_ref_cite_total }} & {{med_ref_cite_ref }} \\
+     Normalized refereed citations & {{ norm_ref_cite_total }} & {{ norm_ref_cite_ref }} \\
+  \end{tabular}
+
+\section*{Indices}
+
+  \begin{tabular}{p{2.5in} p{0.5in} p{0.5in}}
+     & Total & Refereed \\
+     \hline
+     H Index & {{ h_total }} & {{ h_ref }} \\
+     m--Index & {{ m_total }} & {{ m_ref }} \\
+     g--index & {{ g_total }} & {{ g_ref }} \\
+     i10--index & {{ i10_total }} & {{ i10_ref }} \\
+     i100--index & {{ i100_total }} & {{ i100_ref }}\\
+     tori index & {{ tori_total }} & {{ tori_ref }}\\
+     riq index & {{ riq_total }} & {{ riq_ref }} \\
+     read10-index & {{ read10_total }} & {{read10_ref }} \\
+     
+  \end{tabular}
+
+
+\section*{Reads}
+
+  \begin{tabular}{p{2.5in} p{0.5in} p{0.5in}}
+     & Total & Refereed \\
+     \hline
+     Total number of reads & {{ reads_total }} & {{ reads_ref }} \\
+     Average number of reads & {{ avg_reads_total }} & {{ avg_reads_ref }} \\
+     Median number of reads & {{ med_reads_total }} & {{ med_reads_ref }}  \\
+     Total number of downloads & {{ downloads_total }} & {{ downloads_ref }} \\
+     Average number of downloads & {{ downloads_avg }} & {{ downloads_avg_ref }} \\
+     Median number of downloads & {{ med_downloads }} & {{ med_downloads_ref }} \\
+  \end{tabular}
+
+  
+  {{ plot }}
+
+\end{document}

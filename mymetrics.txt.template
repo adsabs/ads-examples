@@ -1,0 +1,41 @@
+Papers
+# Total Refereed
+----------------
+Number of papers  {{ number_of_papers_total }}  {{ number_of_papers_ref }}
+Normalized paper count  {{ normalized_paper_total }}  {{ normalized_paper_ref }}
+
+Citations
+# Total Refereed
+----------------
+Number of citing papers  {{ number_citing_total }} {{ number_citing_ref }}
+Total citations  {{ total_cites }}  {{ total_cites_ref }}
+Number of self-citations  {{ self_cite_total }}  {{ self_cite_ref }}
+Average citations  {{ avg_cite_total }}   {{ avg_cite_ref }}
+Median citations  {{ med_cite_total }}  {{ med_cite_ref }}
+Normalized citations  {{ norm_cite_total }}  {{ norm_cite_ref }}
+Refereed citations  {{ ref_cite_total }}  {{ ref_cite_ref }}
+Average refereed citations  {{ avg_ref_cite_total }}  {{ avg_ref_cite_ref }}
+Median refereed citations  {{ med_ref_cite_total }}  {{med_ref_cite_ref }}
+Normalized refereed citations  {{ norm_ref_cite_total }}  {{ norm_ref_cite_ref }}
+
+Indices
+Total Refereed
+--------------
+H Index  {{ h_total }}  {{ h_ref }} 
+m--Index  {{ m_total }}  {{ m_ref }}
+g--index  {{ g_total }}  {{ g_ref }}
+i10--index  {{ i10_total }}  {{ i10_ref }}
+i100--index  {{ i100_total }}  {{ i100_ref }}
+tori index  {{ tori_total }}  {{ tori_ref }}
+riq index  {{ riq_total }}  {{ riq_ref }}
+read10-index  {{ read10_total }}  {{read10_ref }}
+    
+Reads
+# Total Refereed
+-----------------
+Total number of reads  {{ reads_total }}  {{ reads_ref }}
+Average number of reads  {{ avg_reads_total }}  {{ avg_reads_ref }}
+Median number of reads  {{ med_reads_total }}  {{ med_reads_ref }}
+Total number of downloads  {{ downloads_total }}  {{ downloads_ref }}
+Average number of downloads  {{ downloads_avg }}  {{ downloads_avg_ref }}
+Median number of downloads  {{ med_downloads }}  {{ med_downloads_ref }}
