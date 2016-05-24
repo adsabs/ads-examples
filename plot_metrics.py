@@ -151,7 +151,7 @@ def metrics_to_pandas(metrics):
     return pandas.DataFrame(data, index=pandas.DatetimeIndex(years))
 
 
-def build_latex(metrics, orcid_id=None, plot=None):
+def build_latex(metrics, orcid_id=None, plot=None, desc=None):
     """
     Fill in the basic latex template and generate a PDF. This requires the
     user to have PDFLaTeX installed, otherwise it will not work.
@@ -167,6 +167,7 @@ def build_latex(metrics, orcid_id=None, plot=None):
 
     orcid = '{{\\bf ORCiD iD}}: {}'.format(orcid_id) if orcid_id else ''
     plotpdf = '\\includegraphics[height=0.95\\textheight]{metrics.pdf}' if plot else ''
+    desc = desc if desc else ''
 
     rendered_latex = latex_template.render(
         orcid_id=orcid,
@@ -222,7 +223,8 @@ def build_latex(metrics, orcid_id=None, plot=None):
         downloads_avg_ref='{0:.1f}'.format(metrics['basic stats refereed']['average number of downloads']),
         med_downloads=metrics['basic stats']['median number of downloads'],
         med_downloads_ref=metrics['basic stats refereed']['median number of downloads'],
-        plot=plotpdf
+        plot=plotpdf,
+        desc=desc
     )
 
     # Save filled LaTeX template
@@ -342,10 +344,10 @@ def get_numbers_of_papers_raw(sq):
     return numpy.array(y), numpy.array(number), numpy.array(number_ref)
 
 
-def main(output_path, figure_format, orcid=False, bibcodes=False, query=False, save=False, plot=False, printable=False, override_numbers=False, test=False):
+def main(output_path, figure_format, orcid=False, bibcodes=False, query=False, save=False, plot=False, printable=False, override_numbers=False, test=False, desc=None):
 
     # Imports should not be here, but I don't care....
-    if args.test:
+    if test:
         import ads.sandbox as ads
     else:
         import ads
@@ -493,7 +495,7 @@ def main(output_path, figure_format, orcid=False, bibcodes=False, query=False, s
 
     # Does the user want a printable PDF?
     if printable:
-        build_latex(metrics, orcid_id=orcid, plot=plot)
+        build_latex(metrics, orcid_id=orcid, plot=plot, desc=desc)
 
 
 if __name__ == '__main__':
@@ -574,6 +576,12 @@ if __name__ == '__main__':
         action='store_true',
         default=False
     )
+    parser.add_argument(
+        '--description',
+        dest='description',
+        help='Add a description at the top of the PDF',
+        default=None
+    )
 
     args = parser.parse_args()
 
@@ -591,5 +599,6 @@ if __name__ == '__main__':
         printable=args.printable,
         plot=args.plot,
         override_numbers=args.override_numbers,
-        test=args.test
+        test=args.test,
+        desc=args.description
     )

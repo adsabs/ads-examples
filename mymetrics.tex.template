@@ -3,15 +3,14 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{geometry}
+
 \pagenumbering{gobble}
 
 \pdfinfo{
-  /Title    ()
-  /Author   ()
-  /Creator  ()
-  /Producer ()
-  /Subject  ()
-  /Keywords ()
+  /Title    (ADS Metrics Overview)
+  /Creator  (ADS API; Andy Casey's Python Client)
+  /Subject  (Author's ADS Metrics)
+  /Keywords (ADS, NASA, Astrophysics, Metrics)
 }
 
 \geometry{
@@ -21,7 +20,6 @@
   right=1.0in
 }
 
-\thispagestyle{empty}
 
 \begin{document}
 
@@ -29,13 +27,15 @@
   \includegraphics[width=0.6\textwidth]{ads_logo}
 \end{center}
 
+{{ desc }}
+
 {{ orcid_id }}
 
 {\bf Created on}: \today
 
 \section*{Papers}
 
-  \begin{tabular}{p{2.5in} p{0.5in} p{0.5in}}
+  \begin{tabular}{p{2.in} p{0.5in} p{0.5in}}
      & Total & Refereed \\
      \hline
      Number of papers & {{ number_of_papers_total }} & {{ number_of_papers_ref }}\\
@@ -44,7 +44,7 @@
 
 \section*{Citations}
 
-  \begin{tabular}{p{2.5in} p{0.5in} p{0.5in}}
+  \begin{tabular}{p{2.in} p{0.5in} p{0.5in}}
      & Total & Refereed \\
      \hline
      Number of citing papers & {{ number_citing_total }}& {{ number_citing_ref }} \\
@@ -61,7 +61,7 @@
 
 \section*{Indices}
 
-  \begin{tabular}{p{2.5in} p{0.5in} p{0.5in}}
+  \begin{tabular}{p{2.in} p{0.5in} p{0.5in}}
      & Total & Refereed \\
      \hline
      H Index & {{ h_total }} & {{ h_ref }} \\
@@ -78,7 +78,7 @@
 
 \section*{Reads}
 
-  \begin{tabular}{p{2.5in} p{0.5in} p{0.5in}}
+  \begin{tabular}{p{2.in} p{0.5in} p{0.5in}}
      & Total & Refereed \\
      \hline
      Total number of reads & {{ reads_total }} & {{ reads_ref }} \\
@@ -89,7 +89,6 @@
      Median number of downloads & {{ med_downloads }} & {{ med_downloads_ref }} \\
   \end{tabular}
 
-  
   {{ plot }}
 
 \end{document}
