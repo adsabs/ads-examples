@@ -8,5 +8,5 @@ python plot_metrics.py --orcid 0000-0001-8043-4965 --printable --plot --save-to-
 ```
 
 Makes plots like this:
-[Metrics example page 1](https://github.com/jonnybazookatone/ads-examples/blob/master/metrics-0.jpg)
-[Metrics example page 2](https://github.com/jonnybazookatone/ads-examples/blob/master/metrics-0.jpg)
+![Metrics example page 1](https://github.com/jonnybazookatone/ads-examples/blob/master/metrics-0.jpg)
+![Metrics example page 2](https://github.com/jonnybazookatone/ads-examples/blob/master/metrics-1.jpg)
