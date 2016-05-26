@@ -1,6 +1,19 @@
 """
-Plot metrics for a given query. Client version of what is seen on the ADS
-user interface.
+Plot metrics for a given set of bibcodes using the ADS API. This example allows
+you to create metrics for i) an ORCiD iD query, ii) a generic ADS query, and
+iii) for a list of bibcodes. It will generate the plots that are usuall found
+on the ADS Bumblebee interface by clicking Export -> Metrics.
+
+If requested, a PDF document will be created that also includes the simple
+metric values with their descriptions, combined with the plots if the user
+specifies.
+
+You can also save all plots to disk in CSV format.
+
+Given there is a 2000 limit to the metrics service, you can also request that
+the 'Number of Publications' plot be created using the unlimited query search.
+Bear in mind, you will have to manually modify max_pages and rows if you are
+doing very large searches.
 """
 
 import sys
@@ -18,10 +31,20 @@ from jinja2 import Template
 
 
 def dyear(y):
+    """
+    Convert delta year into a timedelta object
+    :param y: delta year
+    """
     return timedelta(days=365*y)
 
 
 def stepify(x, y, binsize=1):
+    """
+    Create a step-like version of the data.
+    :param x: x-array
+    :param y: y-array
+    :param binsize: length of the step size
+    """
 
     binsize = dyear(binsize)
 
@@ -38,12 +61,20 @@ def stepify(x, y, binsize=1):
 
 
 def step(ax, x, y, label='', color='blue', lw=1):
+    """
+    Create a step plot that is filled underneath. This is not usually possible
+    using the normal ax.step() function
+    """
     x_, y_ = stepify(x, y)
     ax.errorbar(x_, y_, label=label, color=color, lw=lw)
     ax.fill_between(x_, 0, y_, color=color, alpha=0.5)
 
 
 def get_numbers_of_papers(metrics):
+    """
+    Convert the metrics into a format that is easier to work with. Year-ordered
+    numpy arrays.
+    """
     publications = metrics['histograms']['publications']
 
     year, total, year_refereed, refereed = [], [], [], []
@@ -57,12 +88,14 @@ def get_numbers_of_papers(metrics):
 
     year, total, refereed = \
         numpy.array(year), numpy.array(total), numpy.array(refereed)
-
     return year, total, refereed
 
 
 def get_citations_of_papers(metrics):
-
+    """
+    Convert the metrics into a format that is easier to work with. Year-ordered
+    numpy arrays.
+    """
     year_citation, ref_to_ref, ref_to_non_ref, non_ref_to_ref, non_ref_to_non_ref = \
         [], [], [], [], []
 
@@ -81,11 +114,14 @@ def get_citations_of_papers(metrics):
     year_citation, ref_to_ref, ref_to_non_ref, non_ref_to_ref, non_ref_to_non_ref = \
         numpy.array(year_citation), numpy.array(ref_to_ref), \
         numpy.array(ref_to_non_ref), numpy.array(non_ref_to_ref), numpy.array(non_ref_to_non_ref)
-
     return year_citation, ref_to_ref, ref_to_non_ref, non_ref_to_ref, non_ref_to_non_ref
 
 
 def get_indices_of_papers(metrics):
+    """
+    Convert the metrics into a format that is easier to work with. Year-ordered
+    numpy arrays.
+    """
     year_h, h, g, tori, i10, read10, i100 = [], [], [], [], [], [], []
     y = list(metrics['time series']['h'].keys())
     y.sort()
@@ -100,14 +136,18 @@ def get_indices_of_papers(metrics):
         # Normalise read10 Index value by dividing by 10
         read10.append(metrics['time series']['read10'][k]/10.)
         year_h.append(datetime.strptime(k, '%Y'))
+
     year_h, h, g, tori, i10, read10, i100 = \
         numpy.array(year_h), numpy.array(h), numpy.array(g), numpy.array(tori), \
         numpy.array(i10), numpy.array(read10), numpy.array(i100)
-
     return year_h, h, g, tori, i10, read10, i100
 
 
 def get_reads_of_papers(metrics):
+    """
+    Convert the metrics into a format that is easier to work with. Year-ordered
+    numpy arrays.
+    """
     year_reads, total, reads_ref = [], [], []
     y = list(metrics['histograms']['reads']['all reads'].keys())
     y.sort()
@@ -116,14 +156,21 @@ def get_reads_of_papers(metrics):
         year_reads.append(datetime.strptime(k, '%Y'))
         total.append(metrics['histograms']['reads']['all reads'][k])
         reads_ref.append(metrics['histograms']['reads']['refereed reads'][k])
+
     year_reads, total, reads_ref = \
         numpy.array(year_reads), numpy.array(total), numpy.array(reads_ref)
-
     return year_reads, total, reads_ref
 
 
 def metrics_to_pandas(metrics):
-
+    """
+    Place holder for an attempt to make a generic Pandas object for the metrics
+    service. However, for this to work well, you need to know all the possible
+    year keys, and so currently as it is written it won't result in necessarily
+    all the entries (i.e., there are different number of years in 'reads' and
+    'citations', etc.). There is a smarter recursive way to do it, so please
+    update if you have time.
+    """
     years = metrics['histograms']['publications']['all publications'].keys()
     years.sort()
 
@@ -159,6 +206,12 @@ def build_latex(metrics, orcid_id=None, plot=None, desc=None):
 
     :param metrics: data returned from metrics end point
     :type metrics: JSON
+
+    :param orcid_id: Users ORCiD iD
+    :type orcid_id: basestring
+
+    :param plot: does the user want a plot created
+    :type plot: boolean
     """
 
     # Load LaTeX template
@@ -197,8 +250,8 @@ def build_latex(metrics, orcid_id=None, plot=None, desc=None):
         norm_ref_cite_ref='{0:.1f}'.format(metrics['citation stats refereed']['normalized number of refereed citations']),
         h_total=metrics['indicators']['h'],
         h_ref=metrics['indicators refereed']['h'],
-        m_total=metrics['indicators']['m'],
-        m_ref=metrics['indicators refereed']['m'],
+        m_total='{0:.1f}'.format(metrics['indicators']['m']),
+        m_ref='{0:.1f}'.format(metrics['indicators refereed']['m']),
         g_total=metrics['indicators']['g'],
         g_ref=metrics['indicators refereed']['g'],
         i10_total=metrics['indicators']['i10'],
@@ -317,20 +370,24 @@ def get_numbers_of_papers_raw(sq):
     # Do it in two steps because I'm too lazy to do it in a nice way
     years = {'total': {}, 'ref': {}}
     for article in sq:
+        if article.year is None:
+            y = article.pubdate.split('-')[0]
+        else:
+            y = article.year
 
         try:
-            years['total'][article.year] += 1
+            years['total'][y] += 1
         except KeyError:
-            years['total'][article.year] = 1
+            years['total'][y] = 1
 
-        print(article.property, article.year)
         if 'REFEREED' in article.property:
             try:
-                years['ref'][article.year] += 1
+                years['ref'][y] += 1
             except KeyError:
-                years['ref'][article.year] = 1
+                years['ref'][y] = 1
 
     year = list(years['total'].keys())
+
     year.sort()
     number = []
     number_ref = []
@@ -344,7 +401,7 @@ def get_numbers_of_papers_raw(sq):
     return numpy.array(y), numpy.array(number), numpy.array(number_ref)
 
 
-def main(output_path, figure_format, orcid=False, bibcodes=False, query=False, save=False, plot=False, printable=False, override_numbers=False, test=False, desc=None):
+def main(output_path, figure_format, orcid=False, bibcodes=False, query=False, save=False, plot=False, printable=False, test=False, desc=None):
 
     # Imports should not be here, but I don't care....
     if test:
@@ -352,14 +409,11 @@ def main(output_path, figure_format, orcid=False, bibcodes=False, query=False, s
     else:
         import ads
 
-    if override_numbers:
-        fl = ['id', 'bibcode', 'property', 'year']
-        rows = 2000
-        max_pages = 10
-    else:
-        fl = ['id', 'bibcode']
-        rows = 2000
-        max_pages = 1
+    fl = ['id', 'bibcode']
+    rows = 2000
+    max_pages = 1
+
+    print('Using rows: {} with max_pages: {}'.format(rows, max_pages))
 
     # See what the user has given to generate the metrics plot
     if query:
@@ -387,12 +441,7 @@ def main(output_path, figure_format, orcid=False, bibcodes=False, query=False, s
 
     if plot:
         # Number of papers
-        if not override_numbers:
-            y, t, r = get_numbers_of_papers(metrics)
-        elif override_numbers and sq:
-            y, t, r = get_numbers_of_papers_raw(sq)
-        else:
-            print('You cannot specify --overide_numbers with --bibcodes')
+        y, t, r = get_numbers_of_papers(metrics)
 
         number = dict(name='numbers', year=y, total=t, refereed=r)
         # Number of citations
@@ -563,13 +612,6 @@ if __name__ == '__main__':
         default=False
     )
     parser.add_argument(
-        '--override-numbers',
-        dest='override_numbers',
-        help='Do not use metrics to caclulate the total number of papers',
-        action='store_true',
-        default=False
-    )
-    parser.add_argument(
         '--test',
         dest='test',
         help='Run using ADS sandbox environment',
@@ -598,7 +640,6 @@ if __name__ == '__main__':
         save=args.save,
         printable=args.printable,
         plot=args.plot,
-        override_numbers=args.override_numbers,
         test=args.test,
         desc=args.description
     )
