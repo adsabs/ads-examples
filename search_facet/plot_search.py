@@ -1,19 +1,15 @@
 """
-Plot metrics for a given set of bibcodes using the ADS API. This example allows
-you to create metrics for i) an ORCiD iD query, ii) a generic ADS query, and
-iii) for a list of bibcodes. It will generate the plots that are usuall found
-on the ADS Bumblebee interface by clicking Export -> Metrics.
-
-If requested, a PDF document will be created that also includes the simple
-metric values with their descriptions, combined with the plots if the user
-specifies.
+Plot the search facet plots that are found on the ADS search results page.
+This example allows you to create metrics for i) an ORCiD iD query, and ii) a
+generic ADS query.
 
 You can also save all plots to disk in CSV format.
 
-Given there is a 2000 limit to the metrics service, you can also request that
-the 'Number of Publications' plot be created using the unlimited query search.
-Bear in mind, you will have to manually modify max_pages and rows if you are
-doing very large searches.
+There is a limit on the number of items returned. To change this, you can
+modify the rows and max_pages.
+
+rows: number of items returned in a single request (max: 2000)
+max_pages: number of times to iterate over the rows returned (starts: 0)
 """
 
 import sys
@@ -24,10 +20,7 @@ matplotlib.use('TkAgg')
 import seaborn  # simply importing this changes matplotlib styles
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
-import pandas
 import ads
-import subprocess
-from jinja2 import Template
 
 
 def dyear(y):
@@ -74,8 +67,8 @@ def get_numbers_of_papers_raw(p):
     """
     Returns the number of reads vs year. This is not affected by the limit
     of the number of bibcodes required by the /metrics end point
-    :param sq: SearchQuery that the user executed
-    :type sq: ads.SearchQuery
+    :param p: list of ads.Article
+    :type p: list
     """
 
     # Do it in two steps because I'm too lazy to do it in a nice way
@@ -124,6 +117,11 @@ def get_numbers_of_papers_raw(p):
 
 
 def h_index(citations):
+    """
+    Calculate the H-index
+    https://en.wikipedia.org/wiki/H-index
+    :param citations: list of citations (sorted or unsorted)
+    """
 
     c = list(citations)
     c.sort(reverse=True)
