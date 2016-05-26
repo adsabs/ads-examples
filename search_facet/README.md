@@ -1,6 +1,6 @@
 # Examples of how to use the ADS API
 
-## Metrics
+## Search Facet Plots
 
 Example usage:
 ```
