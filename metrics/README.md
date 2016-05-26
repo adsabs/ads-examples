@@ -9,4 +9,4 @@ python plot_metrics.py --orcid 0000-0001-8043-4965 --printable --plot --save-to-
 
 Makes plots like this:
 
-![Metrics example page](https://raw.githubusercontent.com/jonnybazookatone/ads-examples/master/example.jpg)
+![Metrics example page](https://raw.githubusercontent.com/jonnybazookatone/ads-examples/master/metrics/example.jpg)
