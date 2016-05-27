@@ -8,15 +8,15 @@ A small tool to plot the search facet plots that are found on the ADS search res
 
 The tool allows you to create metrics for a set of bibcodes in two ways:
 
-  i. via ORCiD iD
-  ii. via a generic ADS query
+  1. via ORCiD iD
+  2. via a generic ADS query
 
 If you want to preseve the plots, you can either save them to disc as an image, or in CSV format.
 
 Note: this tool is not limited by the number of bibcodes you send it, unlike the metrics service on the ADS user interface. To run on an unlimited set of bibcodes, you should play with the following two parameters:
 
-  i. `--rows`: number of items returned in a single request (max: 2000)
-  ii. `--max-pages`: number of times to iterate over the rows returned
+  1. `--rows`: number of items returned in a single request (max: 2000)
+  2. `--max-pages`: number of times to iterate over the rows returned
 
 For example, `--rows 2000` and `--max-pages 10` will allow the tool to work for upto `2000*10=20,000` bibcodes (if the query returns that many)
 
