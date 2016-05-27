@@ -4,8 +4,12 @@
 
 A collection of tools that show you how to leverage the API of the ADS.
 
+Documentation on the API can be found at the [adsabs](https://github.com/adsabs/adsabs-dev-api) repo.
+
 
 ## Using Andy Casey's Python client
+
+[Get Andy Casey's Client](https://github.com/andycasey/ads).
 
 Examples:
 
