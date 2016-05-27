@@ -3,6 +3,7 @@
 ## Metrics
 A tool to plot metrics for a given set of bibcodes using the ADS API. It makes printer-friendly versions of the one that you find on the ADS user interface:
 
+![Metrics on ADS Bumblebee](https://raw.githubusercontent.com/jonnybazookatone/ads-examples/master/metrics/ui_example.jpg)
 
 This tool allows you to create metrics plots in three ways:
   

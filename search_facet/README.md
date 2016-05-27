@@ -4,7 +4,7 @@
 
 A small tool to plot the search facet plots that are found on the ADS search results page:
 
-![Search example page](https://raw.githubusercontent.com/jonnybazookatone/ads-examples/master/search_facet/ui_example.png)
+![Search results page on ADS Bumblebee](https://raw.githubusercontent.com/jonnybazookatone/ads-examples/master/search_facet/ui_example.png)
 
 The tool allows you to create metrics for a set of bibcodes in two ways:
 
