@@ -2,7 +2,7 @@
 
 ## Search Facet Plots Using Facets (optimised)
 
-A small tool to plot the search facet plots that are found on the ADS search results page. This is a more optimised version than the brute force approach used in the other example [Search Facet Plot](https://raw.githubusercontent.com/jonnybazookatone/ads-examples/master/search_facet):
+A small tool to plot the search facet plots that are found on the ADS search results page. This is a more optimised version than the brute force approach used in the other example [Search Facet Plot](https://github.com/jonnybazookatone/ads-examples/tree/master/search_facet):
 
 ![Search results page on ADS Bumblebee](https://raw.githubusercontent.com/jonnybazookatone/ads-examples/master/search_facet_optimised/ui_example.png)
 
