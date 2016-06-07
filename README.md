@@ -15,7 +15,7 @@ Examples:
 
  * [Create metrics plots](metrics/)
  * [Create search facet plots](search_facet/)
- * [Create search facet plots (optimized version)](search_facet_optimised/)
+ * [Create search facet plots (optimised version)](search_facet_optimised/)
  * [Turn Article into Pandas object](pandas/)
 
  
