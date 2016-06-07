@@ -5,11 +5,11 @@ generic ADS query.
 
 You can also save all plots to disk in CSV format.
 
-There is a limit on the number of items returned. To change this, you can
-modify the rows and max_pages.
-
-rows: number of items returned in a single request (max: 2000)
-max_pages: number of times to iterate over the rows returned (starts: 0)
+There is in principle no limit on the number of papers that are returned to
+create the plots, unlike that of the metrics end point. There is currently not
+extensive documentation on how to use the facets, nor a client implementation
+from Andy Casey's API. For further details on how to leverage the facets, please
+contact the ADS team at adshelp [at] cfa.harvard.edu.
 """
 
 import os
