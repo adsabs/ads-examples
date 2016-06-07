@@ -11,13 +11,13 @@ The tool allows you to create metrics for a set of bibcodes in two ways:
   1. via ORCiD iD
   2. via a generic ADS query
 
-If you want to preseve the plots, you can either save them to disc as an image, or in CSV format.
+If you want to preseve the plots, you can either save them to disc as an image, or in CSV format. This tool expects you to have an environment variable (`ADS_DEV_KEY`) set as a token or to pass it via command line
 
 Note: this tool is not limited by the number of bibcodes in the response unlike the metrics service.
 
 Example usage:
 ```
-python plot_search.py --orcid 0000-0001-8043-4965 --plot -f png --save-to-file csv
+python plot_search.py --orcid 0000-0001-8043-4965 --plot -f png --save-to-file csv --token ADS_DEV_KEY
 ```
 
 Makes plots like this:
