@@ -23,7 +23,6 @@ from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import requests
 
-TOKEN = os.getenv('ADS_DEV_KEY', '')
 
 
 def dyear(y):
@@ -91,8 +90,15 @@ def main(
         query=False,
         save=False,
         plot=False,
-        log=False
+        log=False,
+        token=None
 ):
+
+    if token is None:
+        TOKEN = os.getenv('ADS_DEV_KEY')
+    else:
+        TOKEN = token
+
     # See what the user has given to generate the metrics plot
     if query:
         print('You gave a query: {}'.format(query))
@@ -394,6 +400,13 @@ if __name__ == '__main__':
         help='Plot axis in log-scale',
         action='store_true',
         default=False
+    )
+    parser.add_argument(
+        '--token',
+        dest='token',
+        help='ADS development token',
+        default=None,
+        type=str
     )
 
     args = parser.parse_args()
