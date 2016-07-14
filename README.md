@@ -15,8 +15,14 @@ Examples:
 
  * [Create metrics plots](metrics/)
  * [Create search facet plots](search_facet/)
- * [Create search facet plots (optimised version)](search_facet_optimised/)
  * [Turn Article into Pandas object](pandas/)
+ 
+## Using Python requests library
+
+[Get Kenneth Reitz's Python Requests](http://docs.python-requests.org/en/master/).
+
+Examples:
+ * [Create search facet plots (optimised version)](search_facet_optimised/)
  * [Output your private library to a CSV file](library_csv/)
 
 
