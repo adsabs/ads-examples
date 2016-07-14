@@ -51,7 +51,7 @@ $ more private_libraries.csv
   No Description,3,1974AJ.....79.1082E	1908sscc.book.....E	1908nhu..book.....E
 ```
 
-The only currently option is the output file name:
+As you can see, each value is comma separated, and bibcodes are separated by tabs. If you want this output in something different, then just change the script. The only current option via command line is to choose the output file name:
 
 ```bash
 python lib_2_csv.py --help
