@@ -17,5 +17,10 @@ Examples:
  * [Create search facet plots](search_facet/)
  * [Create search facet plots (optimised version)](search_facet_optimised/)
  * [Turn Article into Pandas object](pandas/)
+ * [Output your private library to a CSV file](library_csv/)
 
- 
+
+# Other
+
+ * [License](LICENSE.md)
+ * [Authors](AUTHORS.md)
