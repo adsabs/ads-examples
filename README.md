@@ -17,7 +17,7 @@ Examples:
  * [Create search facet plots](search_facet/)
  * [Turn Article into Pandas object](pandas/)
  
-## Using Python requests library
+## Using Python Requests library
 
 [Get Kenneth Reitz's Python Requests](http://docs.python-requests.org/en/master/).
 
