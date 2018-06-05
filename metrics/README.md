@@ -14,7 +14,7 @@ This tool allows you to create metrics plots in three ways:
 You can generate hard copies of these plots in image or CSV format. In addition, you can create a *snazzy* PDF that includes your metric statistics, plus a head page with the ADS logo.
 
 
-*Note* This tool is limit to 2000 bibcodes, as this is the limit prescribed by the ADS API (for the metrics service). If you want to do a numbers plot for a larger amount of data, then look at the [Search Facet tool](https://raw.githubusercontent.com/jonnybazookatone/ads-examples/master/search_facet).
+*Note* This tool is limit to 2000 bibcodes, as this is the limit prescribed by the ADS API (for the metrics service). If you want to do a numbers plot for a larger amount of data, then look at the [Search Facet tool](https://github.com/adsabs/ads-examples/tree/master/search_facet).
 
 Example usage:
 ```
