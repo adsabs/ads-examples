@@ -8,14 +8,15 @@ import math
 import requests
 import argparse
 
-TOKEN = None
+token = None
 
 def get_config():
     """
     Load ADS developer key from file
     :return: str
     """
-    if TOKEN is None:
+    global token
+    if token is None:
         try:
             with open(os.path.expanduser('~/.ads/dev_key')) as f:
                 token = f.read().strip()
