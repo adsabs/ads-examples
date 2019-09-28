@@ -87,7 +87,7 @@ def h_index(citations):
 def main(
         output_path,
         figure_format,
-        output_name=None,
+        output_name,
         orcid=False,
         query=False,
         save=False,
@@ -326,10 +326,12 @@ def main(
 
         figure_path = '{}/{}_search_metrics.{}'.format(output_path, output_name, figure_format)
         plt.savefig(figure_path)
+        print("Output plot: {}".format(figure_path))
 
     # Save to disk if requested
     if save == 'csv':
-        with open('{}/{}_paper_year.csv'.format(output_path, output_name), 'w') as f:
+        fname = '{}/{}_paper_year.csv'.format(output_path, output_name)
+        with open(fname, 'w') as f:
                 f.write('#year,unrefereed_number,refereed_number\n')
                 for i in range(len(x_year)):
                     f.write('{year},{unref},{ref}\n'.format(
@@ -337,7 +339,9 @@ def main(
                         unref=unref_pap[i],
                         ref=ref_pap[i]
                     ))
+        print("Output paper histogram: {}".format(fname))
         """
+        # some day we should implement these
         with open('{}/{}_citation_year.csv'.format(output_path, output_name), 'w') as f:
                 f.write('#year,unrefereed_citations,refereed_citations\n')
                 for i in range(len(x_year)):
@@ -346,7 +350,6 @@ def main(
                         unref=unref_cit[i],
                         ref=ref_cit[i]
                     ))
-        """
         with open('{}/{}_read_year.csv'.format(output_path, output_name), 'w') as f:
                 f.write('#year,unrefereed_reads,refereed_reads\n')
                 for i in range(len(x_year)):
@@ -356,21 +359,26 @@ def main(
                         ref=ref_read[i]
                     ))
         """
-        with open('{}/{}_citation_rank.csv'.format(output_path, output_name), 'w') as f:
+        fname = '{}/{}_citation_rank.csv'.format(output_path, output_name)
+        with open(fname, 'w') as f:
             f.write('#index,citation_count\n')
             for i in range(len(y_cc)):
                 f.write('{index},{cit}\n'.format(
                     index=i,
                     cit=y_cc[i],
                 ))
-        """
-        with open('{}/{}_read_rank.csv'.format(output_path, output_name), 'w') as f:
+        print("Output citation rank: {}".format(fname))
+
+        fname = '{}/{}_read_rank.csv'.format(output_path, output_name)
+        with open(fname, 'w') as f:
             f.write('#index,read_count\n')
             for i in range(len(y_rc)):
                 f.write('{index},{read}\n'.format(
                     index=i,
                     read=y_rc[i],
                 ))
+        print("Output read histogram: {}".format(fname))
+
 
 if __name__ == '__main__':
 
@@ -451,6 +459,7 @@ if __name__ == '__main__':
 
     main(
         output_path=args.output,
+        output_name=args.output_name,
         figure_format=args.format,
         orcid=args.orcid,
         query=args.query,
