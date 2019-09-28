@@ -14,6 +14,7 @@ contact the ADS team at adshelp [at] cfa.harvard.edu.
 
 import os
 import sys
+import re
 import numpy
 import argparse
 import matplotlib
@@ -86,6 +87,7 @@ def h_index(citations):
 def main(
         output_path,
         figure_format,
+        output_name,
         orcid=False,
         query=False,
         save=False,
@@ -109,6 +111,10 @@ def main(
     else:
         sys.exit()
 
+    # create a sensible file name
+    if not output_name:
+        output_name = re.sub('\W', '', q)
+
     headers = {'Authorization': 'Bearer:{}'.format(TOKEN)}
     url = 'https://api.adsabs.harvard.edu/v1/search/query'
 
@@ -119,14 +125,14 @@ def main(
         'q': q,
         'sort': 'date desc'
     }
-    params_citation_facet = {
+    params_citation_rank_facet = {
         'facet': 'true',
         'facet.minCount': '1',
         'facet.pivot': 'property,citation_count',
         'q': q,
         'sort': 'citation_count desc',
     }
-    params_read_facet = {
+    params_read_rank_facet = {
         'facet': 'true',
         'facet.minCount': '1',
         'facet.pivot': 'property,read_count',
@@ -146,7 +152,7 @@ def main(
     # Get the citation facets
     r_citation_facet = requests.get(
             url,
-            params=params_citation_facet,
+            params=params_citation_rank_facet,
             headers=headers
         )
     data_citation_facet = \
@@ -155,7 +161,7 @@ def main(
     # Get the read facets
     r_read_facet = requests.get(
             url,
-            params=params_read_facet,
+            params=params_read_rank_facet,
             headers=headers
         )
     data_read_facet = \
@@ -182,8 +188,7 @@ def main(
                 years[y]['unrefereed'] += entry['count']
 
     # Ensure ordering, probably a smarter way to do it
-    yy = years.keys()
-    yy.sort()
+    yy = sorted(years)
     x_year = numpy.array(yy)
 
     ref_pap = numpy.array([years[x_year[i]]['refereed'] for i in range(len(x_year))])
@@ -220,7 +225,7 @@ def main(
     # Collect the metrics from the API
     if plot:
         # Define the figure and the axes
-        fig = plt.figure(0, figsize=(8.27, 11.69))
+        fig = plt.figure(0, figsize=(8.5, 11.))
         ax1 = fig.add_subplot(311)
         ax2 = fig.add_subplot(312)
         ax3 = fig.add_subplot(313)
@@ -315,14 +320,18 @@ def main(
         newax = fig.add_axes([0.1, 0.9, 0.8, 0.1], anchor='NW', aspect='equal')
         newax.imshow(im)
         newax.axis('off')
+        ### XXX - add title
+        #ax1.set_title('Query: {}',format(q))
 
-        figure_path = '{}/search_metrics.{}'.format(output_path, figure_format)
+
+        figure_path = '{}/{}_search_metrics.{}'.format(output_path, output_name, figure_format)
         plt.savefig(figure_path)
+        print("Output plot: {}".format(figure_path))
 
     # Save to disk if requested
     if save == 'csv':
-        with open('{}/number.csv'.format(output_path), 'w') as f:
-
+        fname = '{}/{}_paper_year.csv'.format(output_path, output_name)
+        with open(fname, 'w') as f:
                 f.write('#year,unrefereed_number,refereed_number\n')
                 for i in range(len(x_year)):
                     f.write('{year},{unref},{ref}\n'.format(
@@ -330,20 +339,46 @@ def main(
                         unref=unref_pap[i],
                         ref=ref_pap[i]
                     ))
-        with open('{}/citation_count.csv'.format(output_path), 'w') as f:
+        print("Output paper histogram: {}".format(fname))
+        """
+        # some day we should implement these
+        with open('{}/{}_citation_year.csv'.format(output_path, output_name), 'w') as f:
+                f.write('#year,unrefereed_citations,refereed_citations\n')
+                for i in range(len(x_year)):
+                    f.write('{year},{unref},{ref}\n'.format(
+                        year=x_year[i].year,
+                        unref=unref_cit[i],
+                        ref=ref_cit[i]
+                    ))
+        with open('{}/{}_read_year.csv'.format(output_path, output_name), 'w') as f:
+                f.write('#year,unrefereed_reads,refereed_reads\n')
+                for i in range(len(x_year)):
+                    f.write('{year},{unref},{ref}\n'.format(
+                        year=x_year[i].year,
+                        unref=unref_read[i],
+                        ref=ref_read[i]
+                    ))
+        """
+        fname = '{}/{}_citation_rank.csv'.format(output_path, output_name)
+        with open(fname, 'w') as f:
             f.write('#index,citation_count\n')
             for i in range(len(y_cc)):
                 f.write('{index},{cit}\n'.format(
                     index=i,
                     cit=y_cc[i],
                 ))
-        with open('{}/read_count.csv'.format(output_path), 'w') as f:
+        print("Output citation rank: {}".format(fname))
+
+        fname = '{}/{}_read_rank.csv'.format(output_path, output_name)
+        with open(fname, 'w') as f:
             f.write('#index,read_count\n')
             for i in range(len(y_rc)):
                 f.write('{index},{read}\n'.format(
                     index=i,
                     read=y_rc[i],
                 ))
+        print("Output read histogram: {}".format(fname))
+
 
 if __name__ == '__main__':
 
@@ -408,6 +443,13 @@ if __name__ == '__main__':
         default=None,
         type=str
     )
+    parser.add_argument(
+        '--output-name',
+        dest='output_name',
+        help='Output file prefix',
+        default=None,
+        type=str
+    )
 
     args = parser.parse_args()
 
@@ -417,6 +459,7 @@ if __name__ == '__main__':
 
     main(
         output_path=args.output,
+        output_name=args.output_name,
         figure_format=args.format,
         orcid=args.orcid,
         query=args.query,
