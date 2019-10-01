@@ -24,6 +24,8 @@ from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import requests
 
+class BadApiResponseException(Exception):
+    pass
 
 
 def dyear(y):
@@ -141,31 +143,37 @@ def main(
     }
 
     # Get the number of papers facet
-    r_year_facet = requests.get(
+    r_facet = requests.get(
             url,
             params=params_year_facet,
             headers=headers
         )
+    if not r_facet:
+        raise BadApiResponseException("An API error occurred, status: {}".format(r_facet.status_code))
     data_year_facet = \
-        r_year_facet.json()['facet_counts']['facet_pivot']['property,year']
+        r_facet.json()['facet_counts']['facet_pivot']['property,year']
 
     # Get the citation facets
-    r_citation_facet = requests.get(
+    r_facet = requests.get(
             url,
             params=params_citation_rank_facet,
             headers=headers
         )
+    if not r_facet:
+        raise BadApiResponseException("An API error occurred, status: {}".format(r_facet.status_code))
     data_citation_facet = \
-        r_citation_facet.json()['facet_counts']['facet_pivot']['property,citation_count']
+        r_facet.json()['facet_counts']['facet_pivot']['property,citation_count']
 
     # Get the read facets
-    r_read_facet = requests.get(
+    r_facet = requests.get(
             url,
             params=params_read_rank_facet,
             headers=headers
         )
+    if not r_facet:
+        raise BadApiResponseException("An API error occurred, status: {}".format(r_facet.status_code))
     data_read_facet = \
-        r_read_facet.json()['facet_counts']['facet_pivot']['property,read_count']
+        r_facet.json()['facet_counts']['facet_pivot']['property,read_count']
 
     # Number of Papers
     # ----------------
@@ -466,4 +474,5 @@ if __name__ == '__main__':
         save=args.save,
         plot=args.plot,
         log=args.log,
+        token=args.token
     )
